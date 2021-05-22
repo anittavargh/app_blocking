@@ -2,7 +2,11 @@ const Day = require("../models/days");
 const App = require("../models/app");
 const { Time } = require("../helpers/time");
 
-module.exports.add = async (req, res, next) => {
+/**LOGIC BREAKDOWN
+ * Get the list of apps to be blocked and the limit for a given time
+ */
+
+module.exports.info = async (req, res, next) => {
   try {
     //Get day and time from req.body
     const day = req.body.day;
@@ -17,7 +21,6 @@ module.exports.add = async (req, res, next) => {
 
       //Check if the time recieved from req.body is between the worktimings
       for (i = 0; i < length; i++) {
-        console.log(dayInfo.work_start_timings[i], dayInfo.work_end_timings[i]);
         var openTime = new Time(dayInfo.work_start_timings[i]);
         var closeTime = new Time(dayInfo.work_end_timings[i]);
         var checkTime = new Time(time);
@@ -31,11 +34,14 @@ module.exports.add = async (req, res, next) => {
 
         //If between work timings, return the appnames to be blocked
         if (isBetween) {
-        res.send(dayInfo.work_time_apps);
+          res.send({
+            Status: 200,
+            Message: "Apps to be blocked during work time.",
+            Data: dayInfo.work_time_apps,
+          });
           break;
         }
       }
-
       //Else, find the apps that can be used during non-working hoours
       const appnames = dayInfo.non_work_time_apps.map(async (app) => {
         //check the time that the app can be used from apps table
@@ -47,7 +53,11 @@ module.exports.add = async (req, res, next) => {
       });
       const unpackPromise = await Promise.all(appnames);
       if (unpackPromise != null) {
-        res.send(unpackPromise);
+        res.send({
+          Status: 200,
+          Message: "Apps to be blocked during non work time and the duration to be blocked.",
+          Data: unpackPromise,
+        });
       }
     }
 
@@ -61,7 +71,11 @@ module.exports.add = async (req, res, next) => {
         };
       });
       const _unpackPromise = await Promise.all(_appnames);
-      res.send(_unpackPromise);
+      res.send({
+        Status: 200,
+        Message: "Apps to be blocked during weekend and duration to be blocked.",
+        Data: _unpackPromise,
+      });
     }
   } catch (err) {
     console.log(err);
