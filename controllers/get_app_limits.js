@@ -1,5 +1,9 @@
 const App = require("../models/app");
 
+/**LOGIC BREAKDOWN
+ * Get the names of all apps and theor non working time app limits
+ */
+
 module.exports.appLimit = async (req, res, next) => {
   try {
     const appLimit = await App.find({});

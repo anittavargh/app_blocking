@@ -1,5 +1,9 @@
 const Day = require("../models/days");
 
+/**LOGIC BREAKDOWN
+ * Add work timings for the week days
+ */
+
 module.exports.addWorkHours = async (req, res, next) => {
   try {
     const { day, work_start_timings, work_end_timings } = req.body;

@@ -1,5 +1,9 @@
 const App = require("../models/app");
 
+/**LOGIC BREAKDOWN
+ * Add new app and its weekday and weekend limit
+ */
+
 module.exports.setAppLimit = async (req, res, next) => {
   try {
     const { name, weekday_limit, weekend_limit } = req.body;

@@ -10,16 +10,7 @@ var Time = function (timeString) {
   };
 };
 
-// var timeIsBetween = function (start, end, check) {
-//   return start.hour <= end.hour
-//     ? check.isBiggerThan(start) && !check.isBiggerThan(end)
-//     : (check.isBiggerThan(start) && check.isBiggerThan(end)) ||
-//         (!check.isBiggerThan(start) && !check.isBiggerThan(end));
-// };
-
 module.exports = {
   Time,
-//   timeIsBetween,
 };
 
-// start, end, check
